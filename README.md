@@ -13,17 +13,17 @@ A web application to scrape and display Amazon product data based on user-provid
 ```
 ├── index.html          # Entry point for the frontend
 ├── src/
-│   ├──api/api.js
-    ├── componentes/ ├── cardItem.js e  ├── meta.js   
-│   ├── main.js        # Main app logic (event listeners, theme management)
-│   ├── ui.js          # UI initialization and state management
-│   ├── api.js         # API interaction for fetching products
-│       # Formats product card HTML
-│          # Formats metadata HTML
-│   ├── style.css      # Styles for UI components and themes
-├── .env               # Environment variables (VITE_API_BASE_URL)
-├── vite.config.js     # Vite configuration
-└── README.md          # Project documentation
+│   ├── api/
+│   │   ├── api.js     # API interaction for fetching products
+│   ├── components/
+│   │   ├── cardItem.js # Formats product card HTML
+│   │   ├── meta.js     # Formats metadata HTML
+│   ├── main.js         # Main app logic (event listeners, theme management)
+│   ├── ui.js           # UI initialization and state management
+│   ├── style.css       # Styles for UI components and themes
+├── .env                # Environment variables (VITE_API_BASE_URL)
+├── vite.config.js      # Vite configuration
+└── README.md           # Project documentation
 ```
 
 ## Prerequisites
