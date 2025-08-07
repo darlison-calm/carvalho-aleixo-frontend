@@ -1,24 +1,60 @@
-import './style.css'
-import javascriptLogo from './javascript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.js'
+import { initializeUI, showLoading, showError } from './ui.js';
+import { fetchProducts } from './api/api.js';
 
-document.querySelector('#app').innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
-  </div>
-`
+// Initialize UI before any other operations
+initializeUI();
 
-setupCounter(document.querySelector('#counter'))
+/**
+ * Event Listeners
+ */
+const scrapeBtn = document.getElementById('scrapeBtn');
+const keywordInput = document.getElementById('keyword');
+const modeToggleBtn = document.getElementById('modeToggle');
+
+scrapeBtn.addEventListener('click', () => {
+  const keyword = keywordInput.value.trim();
+  if (!keyword) {
+    showError('Please enter a search keyword.');
+    return;
+  }
+  showLoading(); 
+  fetchProducts(keyword);
+});
+
+keywordInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    scrapeBtn.click();
+  }
+});
+
+/**
+ * Theme Management
+ */
+function setMode(mode) {
+  if (mode === 'dark') {
+    document.body.classList.add('dark-mode');
+    document.body.classList.remove('light-mode');
+    modeToggleBtn.textContent = '🌞';
+    localStorage.setItem('theme', 'dark');
+  } else {
+    document.body.classList.add('light-mode');
+    document.body.classList.remove('dark-mode');
+    modeToggleBtn.textContent = '🌙';
+    localStorage.setItem('theme', 'light');
+  }
+}
+
+function getPreferredMode() {
+  return (
+    localStorage.getItem('theme') ||
+    (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+  );
+}
+
+modeToggleBtn.addEventListener('click', () => {
+  const isDark = document.body.classList.contains('dark-mode');
+  setMode(isDark ? 'light' : 'dark');
+});
+
+// Initialize theme on load
+setMode(getPreferredMode());
